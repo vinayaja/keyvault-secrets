@@ -16,7 +16,7 @@ export async function run() {
         const client = new SecretClient(url, credential);
         const latestSecret = await client.getSecret(secretName);
         
-        exec(`write-output "${secretName}=${latestSecret.value}" | out-file -filepath ${process.env.GITHUB_ENV} $Env:GITHUB_ENV -Encoding utf8 -append`,  {'shell':'pwsh'}, (error, stdout, stderr) => {
+        exec(`write-output "${secretName}=${latestSecret.value}" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`,  {'shell':'pwsh'}, (error, stdout, stderr) => {
             if (error) {
               console.error(`exec error: ${error}`);
               return;
