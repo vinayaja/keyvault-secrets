@@ -1,0 +1,28 @@
+name: Build
+
+on: 
+  workflow_dispatch:
+  push:
+
+
+jobs:
+  Build:
+    runs-on: windows-latest
+    environment: dev
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - uses: azure/login@v2
+      with:
+        creds: '{"clientSecret":  "${{ secrets.CLIENT_SECRET }}","subscriptionId":  "${{ vars.SUBSCRIPTIONID }}","tenantId":  "${{ vars.TENANTID }}","clientId":  "${{ vars.CLIENTID }}"}'
+
+    - uses: ./
+      with:
+        keyvault-name: 'githubtest-vault'
+        secret-name: 'testsecret'
+
+    - run: |
+        Get-Content -Raw ${{ github.workspace}}/files/parameters.json 
+      shell: pwsh

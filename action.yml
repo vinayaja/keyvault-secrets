@@ -1,0 +1,22 @@
+name: "Get Azure keyvault secrets"
+description: "GEt Azure keyvault secrets"
+author: "Vinayak Jadhav"
+
+inputs:
+  keyvault-name:
+    description: "keyvault name"
+    required: true
+  secret-name:
+    description: "secret name"
+    required: false
+  secreat-name-pattern:
+    description: "secret name pattern"
+    required: false
+
+runs:
+  using: "node20"
+  main: "dist/index.js"
+
+branding:
+  icon: "check-square"
+  color: "white"
