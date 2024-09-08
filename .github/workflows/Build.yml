@@ -21,7 +21,8 @@ jobs:
     - uses: ./
       with:
         keyvault-name: 'githubtest-vault'
-        secret-name: 'testsecret'
+        secret-names: 'testsecret,tester'
+        secreat-name-pattern: 'config'
 
     - run: |
         get-childitem Env:\testsecret

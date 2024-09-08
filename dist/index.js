@@ -65129,21 +65129,59 @@ const child_process_1 = __nccwpck_require__(2081);
 async function run() {
     var _a;
     const keyvaultName = (0, core_1.getInput)("keyvault-name");
-    const secretName = (0, core_1.getInput)("secret-name");
+    const secretNames = (0, core_1.getInput)("secret-names");
     const secretNamePattern = (0, core_1.getInput)("secreat-name-pattern");
     try {
         const credential = new identity_1.DefaultAzureCredential();
         const url = `https://${keyvaultName}.vault.azure.net`;
         const client = new keyvault_secrets_1.SecretClient(url, credential);
-        const latestSecret = await client.getSecret(secretName);
-        (0, child_process_1.exec)(`write-output "${secretName}=${latestSecret.value}" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
-            if (error) {
-                console.error(`exec error: ${error}`);
-                return;
+        if ((secretNames == '') && (secretNamePattern == '')) {
+            for await (const secretProperties of client.listPropertiesOfSecrets()) {
+                if (secretProperties.enabled) {
+                    const secret = await client.getSecret(secretProperties.name);
+                    const secretValue = secret.value;
+                    (0, child_process_1.exec)(`echo "::add-mask::${secretValue}" && write-output "${secretProperties.name}=${secretValue}" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`, { 'shell': 'pwsh' }, (error) => {
+                        if (error) {
+                            console.error(`exec error: ${error}`);
+                            return;
+                        }
+                    });
+                }
             }
-            console.log(`stdout: ${stdout}`);
-            console.log(`stderr: ${stderr}`);
-        });
+        }
+        ;
+        if (secretNamePattern != '') {
+            for await (const secretProperties of client.listPropertiesOfSecrets()) {
+                if (secretProperties.enabled) {
+                    if (secretProperties.name.match(secretNamePattern)) {
+                        const secret = await client.getSecret(secretProperties.name);
+                        const secretValue = secret.value;
+                        (0, child_process_1.exec)(`echo "::add-mask::${secretValue}" && write-output "${secretProperties.name}=${secretValue}" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`, { 'shell': 'pwsh' }, (error) => {
+                            if (error) {
+                                console.error(`exec error: ${error}`);
+                                return;
+                            }
+                        });
+                    }
+                }
+            }
+        }
+        ;
+        if (secretNames != '') {
+            const allSecretName = secretNames.split(',');
+            for (var secretName of allSecretName) {
+                const secret = await client.getSecret(secretName);
+                const secretValue = secret.value;
+                (0, child_process_1.exec)(`echo "::add-mask::${secretValue}" && write-output "${secretName}=${secretValue}" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`, { 'shell': 'pwsh' }, (error) => {
+                    if (error) {
+                        console.error(`exec error: ${error}`);
+                        return;
+                    }
+                });
+            }
+            ;
+        }
+        ;
     }
     catch (error) {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");
