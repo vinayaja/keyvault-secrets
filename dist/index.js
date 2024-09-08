@@ -65136,8 +65136,7 @@ async function run() {
         const url = `https://${keyvaultName}.vault.azure.net`;
         const client = new keyvault_secrets_1.SecretClient(url, credential);
         const latestSecret = await client.getSecret(secretName);
-        console.log(`Latest version of the secret ${secretName}: `, latestSecret);
-        (0, child_process_1.exec)(`New-Item -Path Env:\\${secretName} -Value "${latestSecret}"`, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
+        (0, child_process_1.exec)(`New-Item -Path Env:\\${secretName} -Value "${latestSecret.value}"`, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
             if (error) {
                 console.error(`exec error: ${error}`);
                 return;
@@ -65145,7 +65144,6 @@ async function run() {
             console.log(`stdout: ${stdout}`);
             console.log(`stderr: ${stderr}`);
         });
-        console.log(process.env);
     }
     catch (error) {
         (0, core_1.setFailed)((_a = error === null || error === void 0 ? void 0 : error.message) !== null && _a !== void 0 ? _a : "Unknown error");

@@ -24,5 +24,5 @@ jobs:
         secret-name: 'testsecret'
 
     - run: |
-        Get-Content -Raw ${{ github.workspace}}/files/parameters.json 
+        get-childitem env: 
       shell: pwsh

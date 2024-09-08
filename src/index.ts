@@ -14,9 +14,8 @@ export async function run() {
 
         const client = new SecretClient(url, credential);
         const latestSecret = await client.getSecret(secretName);
-        console.log(`Latest version of the secret ${secretName}: `, latestSecret);
         
-        exec(`New-Item -Path Env:\\${secretName} -Value "${latestSecret}"`,  {'shell':'pwsh'}, (error, stdout, stderr) => {
+        exec(`New-Item -Path Env:\\${secretName} -Value "${latestSecret.value}"`,  {'shell':'pwsh'}, (error, stdout, stderr) => {
             if (error) {
               console.error(`exec error: ${error}`);
               return;
@@ -25,7 +24,6 @@ export async function run() {
             console.log(`stderr: ${stderr}`);
           });
         
-        console.log(process.env)
 
     }catch(error){
         setFailed((error as Error)?.message ?? "Unknown error");
