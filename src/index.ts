@@ -16,6 +16,7 @@ export async function run() {
         
         if((secretNames == '') && (secretNamePattern == ''))
         {
+        console.log(`Getting all secrets from ${keyvaultName}`);
         for await (const secretProperties of client.listPropertiesOfSecrets()) {
             if (secretProperties.enabled) {
               const secret = await client.getSecret(secretProperties.name);
@@ -32,6 +33,7 @@ export async function run() {
 
         if(secretNamePattern != '')
         {
+            console.log(`Getting all secrets from ${keyvaultName} for pattern ${secretNamePattern}`);
             for await (const secretProperties of client.listPropertiesOfSecrets()) {
                 if (secretProperties.enabled) {
                     if(secretProperties.name.match(secretNamePattern))
@@ -55,6 +57,7 @@ export async function run() {
             
             for(var secretName of allSecretName)
             {
+                console.log(`Getting secret from ${keyvaultName} for name ${secretName}`);
                 const secret = await client.getSecret(secretName);
                 const secretValue = secret.value;
                 exec(`echo "::add-mask::${secretValue}" && write-output "${secretName}=${secretValue}" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`,  {'shell':'pwsh'}, (error) => {

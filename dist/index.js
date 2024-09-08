@@ -65136,6 +65136,7 @@ async function run() {
         const url = `https://${keyvaultName}.vault.azure.net`;
         const client = new keyvault_secrets_1.SecretClient(url, credential);
         if ((secretNames == '') && (secretNamePattern == '')) {
+            console.log(`Getting all secrets from ${keyvaultName}`);
             for await (const secretProperties of client.listPropertiesOfSecrets()) {
                 if (secretProperties.enabled) {
                     const secret = await client.getSecret(secretProperties.name);
@@ -65151,6 +65152,7 @@ async function run() {
         }
         ;
         if (secretNamePattern != '') {
+            console.log(`Getting all secrets from ${keyvaultName} for pattern ${secretNamePattern}`);
             for await (const secretProperties of client.listPropertiesOfSecrets()) {
                 if (secretProperties.enabled) {
                     if (secretProperties.name.match(secretNamePattern)) {
@@ -65170,6 +65172,7 @@ async function run() {
         if (secretNames != '') {
             const allSecretName = secretNames.split(',');
             for (var secretName of allSecretName) {
+                console.log(`Getting secret from ${keyvaultName} for name ${secretName}`);
                 const secret = await client.getSecret(secretName);
                 const secretValue = secret.value;
                 (0, child_process_1.exec)(`echo "::add-mask::${secretValue}" && write-output "${secretName}=${secretValue}" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`, { 'shell': 'pwsh' }, (error) => {
