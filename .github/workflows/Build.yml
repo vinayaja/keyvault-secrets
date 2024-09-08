@@ -25,5 +25,5 @@ jobs:
         secreat-name-pattern: 'config'
 
     - run: |
-        get-childitem Env:\testsecret
+        get-childitem Env:
       shell: pwsh

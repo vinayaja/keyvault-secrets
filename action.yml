@@ -6,8 +6,8 @@ inputs:
   keyvault-name:
     description: "keyvault name"
     required: true
-  secret-name:
-    description: "secret name"
+  secret-names:
+    description: "secret names, provide single name or multiple names seperated by ,"
     required: false
   secreat-name-pattern:
     description: "secret name pattern"
