@@ -1,4 +1,5 @@
 import { getInput, setFailed } from "@actions/core";
+import { context } from "@actions/github";
 import { DefaultAzureCredential } from "@azure/identity";
 import { SecretClient } from "@azure/keyvault-secrets";
 import { exec } from "child_process";
@@ -15,7 +16,7 @@ export async function run() {
         const client = new SecretClient(url, credential);
         const latestSecret = await client.getSecret(secretName);
         
-        exec(`New-Item -Path Env:\\${secretName} -Value "${latestSecret.value}"`,  {'shell':'pwsh'}, (error, stdout, stderr) => {
+        exec(`write-output "${secretName}=${latestSecret.value}" | out-file -filepath ${process.env.GITHUB_ENV} $Env:GITHUB_ENV -Encoding utf8 -append`,  {'shell':'pwsh'}, (error, stdout, stderr) => {
             if (error) {
               console.error(`exec error: ${error}`);
               return;

@@ -65136,7 +65136,7 @@ async function run() {
         const url = `https://${keyvaultName}.vault.azure.net`;
         const client = new keyvault_secrets_1.SecretClient(url, credential);
         const latestSecret = await client.getSecret(secretName);
-        (0, child_process_1.exec)(`New-Item -Path Env:\\${secretName} -Value "${latestSecret.value}"`, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
+        (0, child_process_1.exec)(`write-output "${secretName}=${latestSecret.value}" | out-file -filepath ${process.env.GITHUB_ENV} $Env:GITHUB_ENV -Encoding utf8 -append`, { 'shell': 'pwsh' }, (error, stdout, stderr) => {
             if (error) {
                 console.error(`exec error: ${error}`);
                 return;
