@@ -40,7 +40,7 @@ export async function run() {
                     {
                         const secret = await client.getSecret(secretProperties.name);
                         const secretValue = secret.value;
-                    exec(`$secretvalue = "${secretValue}" && echo "::add-mask::$secretValue" && write-output "${secretProperties.name}=$secretValue" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`,  {'shell':'pwsh'}, (error) => {
+                    exec(`secretValue = ${secret.value} && echo "::add-mask::$secretValue" && echo "${secretProperties.name}=$secretValue" >> ${process.env.GITHUB_ENV}`,  (error) => {
                         if (error) {
                         console.error(`exec error: ${error}`);
                         return;
@@ -59,7 +59,6 @@ export async function run() {
             {
                 console.log(`Getting secret from ${keyvaultName} for name ${secretName}`);
                 const secret = await client.getSecret(secretName);
-                console.log(secret);
                 const secretValue = secret.value;
                 exec(`$secretvalue = "${secretValue}" && echo "::add-mask::$secretValue" && write-output "${secretName}=$secretValue" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`,  {'shell':'pwsh'}, (error) => {
                     if (error) {
