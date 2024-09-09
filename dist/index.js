@@ -65174,6 +65174,7 @@ async function run() {
             for (var secretName of allSecretName) {
                 console.log(`Getting secret from ${keyvaultName} for name ${secretName}`);
                 const secret = await client.getSecret(secretName);
+                console.log(secret);
                 const secretValue = secret.value;
                 (0, child_process_1.exec)(`$secretvalue = "${secretValue}" && echo "::add-mask::$secretValue" && write-output "${secretName}=$secretValue" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`, { 'shell': 'pwsh' }, (error) => {
                     if (error) {
