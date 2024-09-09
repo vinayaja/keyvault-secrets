@@ -65141,7 +65141,7 @@ async function run() {
                 if (secretProperties.enabled) {
                     const secret = await client.getSecret(secretProperties.name);
                     const secretValue = secret.value;
-                    (0, child_process_1.exec)(`$secretvalue = "${secretValue}" && echo "::add-mask::${secretValue}" && write-output "${secretProperties.name}=${secretValue}" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`, { 'shell': 'pwsh' }, (error) => {
+                    (0, child_process_1.exec)(`$secretvalue = "${secretValue}" && echo "::add-mask::$secretValue" && write-output "${secretProperties.name}=$secretValue" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`, { 'shell': 'pwsh' }, (error) => {
                         if (error) {
                             console.error(`exec error: ${error}`);
                             return;
@@ -65158,7 +65158,7 @@ async function run() {
                     if (secretProperties.name.includes(secretNamePattern)) {
                         const secret = await client.getSecret(secretProperties.name);
                         const secretValue = secret.value;
-                        (0, child_process_1.exec)(`$secretvalue = "${secretValue}" && echo "::add-mask::${secretValue}" && write-output "${secretProperties.name}=${secretValue}" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`, { 'shell': 'pwsh' }, (error) => {
+                        (0, child_process_1.exec)(`$secretvalue = "${secretValue}" && echo "::add-mask::$secretValue" && write-output "${secretProperties.name}=$secretValue" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`, { 'shell': 'pwsh' }, (error) => {
                             if (error) {
                                 console.error(`exec error: ${error}`);
                                 return;
@@ -65175,7 +65175,7 @@ async function run() {
                 console.log(`Getting secret from ${keyvaultName} for name ${secretName}`);
                 const secret = await client.getSecret(secretName);
                 const secretValue = secret.value;
-                (0, child_process_1.exec)(`$secretvalue = "${secretValue}" && echo "::add-mask::${secretValue}" && write-output "${secretName}=${secretValue}" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`, { 'shell': 'pwsh' }, (error) => {
+                (0, child_process_1.exec)(`$secretvalue = "${secretValue}" && echo "::add-mask::$secretValue" && write-output "${secretName}=$secretValue" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`, { 'shell': 'pwsh' }, (error) => {
                     if (error) {
                         console.error(`exec error: ${error}`);
                         return;
