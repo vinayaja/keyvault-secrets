@@ -1,4 +1,4 @@
-# Replace token
+# Get secrets from Azure Keyvault
 
 Simple GitHub Action to fetch secrets from azure keyvault and save it as runtime env variables.  
 
@@ -7,6 +7,8 @@ Simple GitHub Action to fetch secrets from azure keyvault and save it as runtime
 - `keyvault-name` - Github Token or Pat Token (Required)
 - `secret-names` - Secret names. pass single or multiple names with comma seperated values (Optional)
 - `secreat-name-pattern` - secret name patter for eg, to retrive tokens with name config* pass value 'config' (Optional)
+
+Note: Please login to azure with azure/login@v2 action first.
 
 ## Example
 
@@ -24,7 +26,7 @@ jobs:
 
     - uses: azure/login@v2
       with:
-        creds: '{"clientSecret":  "${{ secrets.CLIENT_SECRET }}","subscriptionId":  "${{ vars.SUBSCRIPTIONID }}","tenantId":  "${{ vars.TENANTID }}","clientId":  "${{ vars.CLIENTID }}"}'
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - uses: ./
       with:

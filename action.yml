@@ -1,5 +1,5 @@
 name: "Get Azure keyvault secrets"
-description: "GEt Azure keyvault secrets"
+description: "Get Azure keyvault secrets"
 author: "Vinayak Jadhav"
 
 inputs:
