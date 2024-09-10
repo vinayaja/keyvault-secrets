@@ -1,7 +1,6 @@
 import { getInput, setFailed, setSecret, exportVariable} from "@actions/core";
 import { DefaultAzureCredential } from "@azure/identity";
 import { SecretClient } from "@azure/keyvault-secrets";
-import { exec } from "child_process";
 
 export async function run() {
     const keyvaultName = getInput("keyvault-name");
