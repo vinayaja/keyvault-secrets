@@ -12,7 +12,7 @@ Note: Please login to azure with azure/login@v2 action first.
 
 ## Example
 
-If you want to ftch all secrets
+If you want to fetch all secrets
 
 ```yml
 
