@@ -1,4 +1,4 @@
-import { getInput, setFailed } from "@actions/core";
+import { getInput, setFailed, setSecret, exportVariable} from "@actions/core";
 import { DefaultAzureCredential } from "@azure/identity";
 import { SecretClient } from "@azure/keyvault-secrets";
 import { exec } from "child_process";
@@ -20,13 +20,16 @@ export async function run() {
         for await (const secretProperties of client.listPropertiesOfSecrets()) {
             if (secretProperties.enabled) {
               const secret = await client.getSecret(secretProperties.name);
-              const secretValue = secret.value;
-              exec(`$secretvalue = "${secretValue}" && echo "::add-mask::$secretValue" && write-output "${secretProperties.name}=$secretValue" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`,  {'shell':'pwsh'}, (error) => {
-                if (error) {
-                  console.error(`exec error: ${error}`);
-                  return;
-                }
-              });
+              const secretValue = secret.value || '';
+              setSecret(secretValue);
+              exportVariable(secretProperties.name,secretValue);
+
+              //exec(`$secretvalue = "${secretValue}" && echo "::add-mask::$secretValue" && write-output "${secretProperties.name}=$secretValue" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`,  {'shell':'pwsh'}, (error) => {
+                //if (error) {
+                //  console.error(`exec error: ${error}`);
+                //  return;
+                //}
+              //});
             }
           }
         };
@@ -39,13 +42,15 @@ export async function run() {
                     if(secretProperties.name.includes(secretNamePattern))
                     {
                         const secret = await client.getSecret(secretProperties.name);
-                        const secretValue = secret.value;
-                    exec(`SECRET_VALUE=${secret.value} && echo "::add-mask::$SECRET_VALUE" && echo "${secretProperties.name}=$SECRET_VALUE" >> ${process.env.GITHUB_ENV}`,  {'shell':'bash'}, (error) => {
-                        if (error) {
-                        console.error(`exec error: ${error}`);
-                        return;
-                        }
-                    });
+                        const secretValue = secret.value || '';
+                        setSecret(secretValue);
+                        exportVariable(secretProperties.name,secretValue);            
+                    //exec(`SECRET_VALUE=${secret.value} && echo "::add-mask::$SECRET_VALUE" && echo "${secretProperties.name}=$SECRET_VALUE" >> ${process.env.GITHUB_ENV}`,  {'shell':'bash'}, (error) => {
+                      //  if (error) {
+                      //  console.error(`exec error: ${error}`);
+                      //  return;
+                     //   }
+                   // });
                 }
                 }
             }
@@ -59,13 +64,15 @@ export async function run() {
             {
                 console.log(`Getting secret from ${keyvaultName} for name ${secretName}`);
                 const secret = await client.getSecret(secretName);
-                const secretValue = secret.value;
-                exec(`$secretvalue = "${secretValue}" && echo "::add-mask::$secretValue" && write-output "${secretName}=$secretValue" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`,  {'shell':'pwsh'}, (error) => {
-                    if (error) {
-                        console.error(`exec error: ${error}`);
-                        return;
-                    }
-                });
+                const secretValue = secret.value || '';
+                setSecret(secretValue);
+                exportVariable(secretName,secretValue);
+                //exec(`$secretvalue = "${secretValue}" && echo "::add-mask::$secretValue" && write-output "${secretName}=$secretValue" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`,  {'shell':'pwsh'}, (error) => {
+               //     if (error) {
+               //         console.error(`exec error: ${error}`);
+                //        return;
+                //    }
+               // });
             };
             
         };  
