@@ -28,16 +28,17 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - uses: ./
+    - uses: vinayaja/keyvault-secrets@v1.0.1
       with:
         keyvault-name: 'githubtest-vault'
+        secret-names: 'testsecret,tester'
         
 ```
 If you want to fetch multiple secrets:
 
 ```yml
 
-- uses: vinayaja/replace-token@v1.0.0
+- uses: vinayaja/keyvault-secrets@v1.0.1
   with:
     keyvault-name: 'githubtest-vault'
     secret-names: 'testsecret,tester'
@@ -47,7 +48,7 @@ If you want to fetch secrets with pattern in name:
 
 ```yml
 
-- uses: vinayaja/replace-token@v1.0.0
+- uses: vinayaja/keyvault-secrets@v1.0.1
   with:
     keyvault-name: 'githubtest-vault'
     secreat-name-pattern: 'config'
