@@ -40,7 +40,7 @@ export async function run() {
                     {
                         const secret = await client.getSecret(secretProperties.name);
                         const secretValue = secret.value;
-                    exec(`SECRET_VALUE = ${secret.value} && echo "::add-mask::$SECRET_VALUE" && echo "${secretProperties.name}=$SECRET_VALUE" >> ${process.env.GITHUB_ENV}`,  {'shell':'bash'}, (error) => {
+                    exec(`SECRET_VALUE=${secret.value} && echo "::add-mask::$SECRET_VALUE" && echo "${secretProperties.name}=$SECRET_VALUE" >> ${process.env.GITHUB_ENV}`,  {'shell':'bash'}, (error) => {
                         if (error) {
                         console.error(`exec error: ${error}`);
                         return;

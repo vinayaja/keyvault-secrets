@@ -65158,7 +65158,7 @@ async function run() {
                     if (secretProperties.name.includes(secretNamePattern)) {
                         const secret = await client.getSecret(secretProperties.name);
                         const secretValue = secret.value;
-                        (0, child_process_1.exec)(`SECRET_VALUE = ${secret.value} && echo "::add-mask::$SECRET_VALUE" && echo "${secretProperties.name}=$SECRET_VALUE" >> ${process.env.GITHUB_ENV}`, { 'shell': 'bash' }, (error) => {
+                        (0, child_process_1.exec)(`SECRET_VALUE=${secret.value} && echo "::add-mask::$SECRET_VALUE" && echo "${secretProperties.name}=$SECRET_VALUE" >> ${process.env.GITHUB_ENV}`, { 'shell': 'bash' }, (error) => {
                             if (error) {
                                 console.error(`exec error: ${error}`);
                                 return;
