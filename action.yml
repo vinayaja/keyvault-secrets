@@ -1,4 +1,4 @@
-name: "Get Azure keyvault secrets"
+name: "Get Az Keyvault Secrets"
 description: "Get Azure keyvault secrets"
 author: "Vinayak Jadhav"
 
