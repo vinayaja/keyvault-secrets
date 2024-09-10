@@ -21,6 +21,7 @@ jobs:
     - uses: ./
       with:
         keyvault-name: 'githubtest-vault'
+        secret-names: 'testsecret,tester'
         secreat-name-pattern: 'config'
 
     - run: |

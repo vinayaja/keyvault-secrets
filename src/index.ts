@@ -23,13 +23,6 @@ export async function run() {
               const secretValue = secret.value || '';
               setSecret(secretValue);
               exportVariable(secretProperties.name,secretValue);
-
-              //exec(`$secretvalue = "${secretValue}" && echo "::add-mask::$secretValue" && write-output "${secretProperties.name}=$secretValue" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`,  {'shell':'pwsh'}, (error) => {
-                //if (error) {
-                //  console.error(`exec error: ${error}`);
-                //  return;
-                //}
-              //});
             }
           }
         };
@@ -45,13 +38,7 @@ export async function run() {
                         const secretValue = secret.value || '';
                         setSecret(secretValue);
                         exportVariable(secretProperties.name,secretValue);            
-                    //exec(`SECRET_VALUE=${secret.value} && echo "::add-mask::$SECRET_VALUE" && echo "${secretProperties.name}=$SECRET_VALUE" >> ${process.env.GITHUB_ENV}`,  {'shell':'bash'}, (error) => {
-                      //  if (error) {
-                      //  console.error(`exec error: ${error}`);
-                      //  return;
-                     //   }
-                   // });
-                }
+                    }
                 }
             }
         };
@@ -67,12 +54,6 @@ export async function run() {
                 const secretValue = secret.value || '';
                 setSecret(secretValue);
                 exportVariable(secretName,secretValue);
-                //exec(`$secretvalue = "${secretValue}" && echo "::add-mask::$secretValue" && write-output "${secretName}=$secretValue" | out-file -filepath ${process.env.GITHUB_ENV} -Encoding utf8 -append`,  {'shell':'pwsh'}, (error) => {
-               //     if (error) {
-               //         console.error(`exec error: ${error}`);
-                //        return;
-                //    }
-               // });
             };
             
         };  
